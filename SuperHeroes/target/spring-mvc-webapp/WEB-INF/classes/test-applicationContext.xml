@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+              xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"> 
+
+    <!-- Bean definitions go here -->
+     <tx:annotation-driven/>
+
+    <context:component-scan base-package="com.sg.superheroes.dao" />
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url"
+                  value="jdbc:mysql://localhost:3306/HeroSightings_Test"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+        <property name="initialSize" value="5"/>
+        <property name="maxTotal" value="10"/>
+    </bean>
+
+    <bean id="transactionManager"
+      class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="MetaHumanDao" 
+          class="com.sg.superheroes.dao.MetaHumanDaoDbImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <bean id="PowerDao" 
+          class="com.sg.superheroes.dao.PowerDaoDbImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <bean id="LocationDao" 
+          class="com.sg.superheroes.dao.LocationDaoDbImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <bean id="OrganizationDao" 
+          class="com.sg.superheroes.dao.OrganizationDaoDbImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <bean id="SightingDao" 
+          class="com.sg.superheroes.dao.SightingDaoDbImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <bean id="MetaHumanOrganizationBridgeDao" 
+          class="com.sg.superheroes.dao.MetaHumanOrganizationBridgeDaoDbImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <bean id="MetaHumanPowerBridgeDao" 
+          class="com.sg.superheroes.dao.MetaHumanPowerBridgeDaoDbImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <bean id="MetaHumanSightingBridgeDao" 
+          class="com.sg.superheroes.dao.MetaHumanSightingBridgeDaoDbImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    
+        <bean id="MetaHumanService"
+          class ="com.sg.superheroes.service.MetaHumanServiceImpl">
+        <constructor-arg ref = "MetaHumanDao"/>
+    </bean>
+    <bean id="PowerService"
+          class ="com.sg.superheroes.service.PowerServiceImpl">
+        <constructor-arg ref = "PowerDao"/>
+    </bean>
+    <bean id="LocationService"
+          class ="com.sg.superheroes.service.LocationServiceImpl">
+        <constructor-arg ref = "LocationDao"/>
+    </bean>
+    <bean id="OrganizationService"
+          class ="com.sg.superheroes.service.OrganizationServiceImpl">
+        <constructor-arg ref = "OrganizationDao"/>
+    </bean>
+    <bean id="SightingService"
+          class ="com.sg.superheroes.service.SightingServiceImpl">
+        <constructor-arg ref = "SightingDao"/>
+    </bean>
+    <bean id="MetaHumanOrganizationBridgeService"
+          class ="com.sg.superheroes.service.MetaHumanOrganizationBridgeServiceImpl">
+        <constructor-arg ref = "MetaHumanOrganizationBridgeDao"/>
+    </bean>
+    <bean id="MetaHumanPowerBridgeService"
+          class ="com.sg.superheroes.service.MetaHumanPowerBridgeServiceImpl">
+        <constructor-arg ref = "MetaHumanPowerBridgeDao"/>
+    </bean>
+    <bean id="MetaHumanSightingBridgeService"
+          class ="com.sg.superheroes.service.MetaHumanSightingBridgeServiceImpl">
+        <constructor-arg ref = "MetaHumanSightingBridgeDao"/>
+    </bean>
+</beans>
